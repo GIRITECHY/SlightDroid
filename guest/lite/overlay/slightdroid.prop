@@ -1,0 +1,9 @@
+# SlightDroid: appended to /default.prop by the SlightDroid initrd (SLIGHTDROID=1)
+# ADB over TCP for the launcher (QEMU forwards only 127.0.0.1 on the host to it)
+service.adb.tcp.port=5555
+persist.adb.tcp.port=5555
+# Lite: keep installs from freezing the UI on 2-core hosts
+dalvik.vm.dex2oat-threads=1
+dalvik.vm.boot-dex2oat-threads=2
+# no boot animation delay
+debug.sf.nobootanimation=1

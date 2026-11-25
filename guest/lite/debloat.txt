@@ -1,0 +1,35 @@
+# SlightDroid Lite: removed from the Android-x86 9.0-r2 system image at build time
+# (tools/build/make-system-image.ps1). One path per line, relative to /system.
+#
+# Why: SlightDroid ships no analytics and no Google apps by default (they are also not
+# redistributable), and on a 1 GB guest they used ~250 MB of RAM in the background.
+
+# Android-x86 usage analytics (sends data to Google Analytics)
+priv-app/AnalyticsService
+
+# Google apps and services
+priv-app/GmsCore
+priv-app/GmsCoreSetup
+priv-app/Phonesky
+priv-app/Velvet
+priv-app/GoogleServicesFramework
+priv-app/GoogleLoginService
+priv-app/SetupWizard
+priv-app/GoogleBackupTransport
+priv-app/GoogleRestore
+priv-app/GoogleOneTimeInitializer
+priv-app/GooglePartnerSetup
+priv-app/GoogleFeedback
+app/Gmail2
+app/GoogleContactsSyncAdapter
+app/GoogleCalendarSyncAdapter
+app/GooglePrintRecommendationService
+app/WebViewGoogle
+
+# Desktop taskbar shell (71 MB); the standard launcher (27 MB) is the home screen instead
+priv-app/Taskbar
+
+# KEPT FOR NOW (needed for Android 9 to work; replace before a public release):
+#   app/Chrome                   the only working WebView provider on Android 9 (proprietary)
+#   priv-app/GooglePackageInstaller, priv-app/GoogleExtServices, app/GoogleExtShared
+#                                Google builds of core AOSP components

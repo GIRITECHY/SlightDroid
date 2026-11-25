@@ -1,0 +1,152 @@
+{
+  "_comment": "Pinned third-party inputs. Every file lands in downloads/<id>/ and is verified before use. 'ship' = may go into SlightDroid-Setup.exe (licence permits redistribution); 'dev' = build/test tool only, never shipped; 'spike' = M1.5 engine comparison only, never shipped.",
+  "packages": [
+    {
+      "id": "qemu",
+      "use": "ship",
+      "what": "QEMU for Windows (engine A), Stefan Weil build [legacy: earlier QEMU engine / tests; skipped unless -All or -Only]",
+      "license": "GPL-2.0 (+LGPL/BSD/MIT parts); ship with source offer",
+      "url": "https://qemu.weilnetz.de/w64/qemu-w64-setup-20260811.exe",
+      "file": "qemu-w64-setup-20260811.exe",
+      "sha512": "5bcf9eed634e8575a37b74f445af41a2fe4106da512d0c30c368301d4c105037fdfab40a5287367a28a957624cddebbc8c07e16c88ab6634f554cdf3d16bf543",
+      "legacy": true
+    },
+    {
+      "id": "android-x86-9",
+      "use": "ship",
+      "what": "Android-x86 9.0-r2, 32-bit (Lite fallback guest) [legacy: earlier QEMU engine / tests; skipped unless -All or -Only]",
+      "license": "Apache-2.0 userspace, GPL-2.0 kernel; ship with source offer",
+      "url": "https://sourceforge.net/projects/android-x86/files/Release%209.0/android-x86-9.0-r2.iso/download",
+      "file": "android-x86-9.0-r2.iso",
+      "sha1": "d72bbd11c1bedbe99f50da54731c6a83b41becb0",
+      "mirrors": [
+        "https://downloads.sourceforge.net/project/android-x86/Release%209.0/android-x86-9.0-r2.iso?use_mirror=freefr",
+        "https://downloads.sourceforge.net/project/android-x86/Release%209.0/android-x86-9.0-r2.iso?use_mirror=netix",
+        "https://downloads.sourceforge.net/project/android-x86/Release%209.0/android-x86-9.0-r2.iso?use_mirror=phoenixnap",
+        "https://downloads.sourceforge.net/project/android-x86/Release%209.0/android-x86-9.0-r2.iso?use_mirror=cfhcable",
+        "https://downloads.sourceforge.net/project/android-x86/Release%209.0/android-x86-9.0-r2.iso?use_mirror=deac-fra",
+        "https://downloads.sourceforge.net/project/android-x86/Release%209.0/android-x86-9.0-r2.iso?use_mirror=kumisystems"
+      ],
+      "segments": 24,
+      "legacy": true
+    },
+    {
+      "id": "blissos-14",
+      "use": "ship",
+      "what": "BlissOS 14.10.3 FOSS (Android 11, x86_64) for engine A [legacy: earlier QEMU engine / tests; skipped unless -All or -Only]",
+      "license": "Apache-2.0 userspace, GPL-2.0 kernel; FOSS variant has no GApps; ship with source offer",
+      "url": "https://sourceforge.net/projects/blissos-x86/files/Official/BlissOS14/FOSS/Generic/Bliss-v14.10.3-x86_64-OFFICIAL-foss-20241012.iso/download",
+      "file": "Bliss-v14.10.3-x86_64-OFFICIAL-foss-20241012.iso",
+      "sha1": "3e96c68b6e2e933d0e3e09fd36f5052b399ad249",
+      "mirrors": [
+        "https://downloads.sourceforge.net/project/blissos-x86/Official/BlissOS14/FOSS/Generic/Bliss-v14.10.3-x86_64-OFFICIAL-foss-20241012.iso?use_mirror=freefr",
+        "https://downloads.sourceforge.net/project/blissos-x86/Official/BlissOS14/FOSS/Generic/Bliss-v14.10.3-x86_64-OFFICIAL-foss-20241012.iso?use_mirror=netix",
+        "https://downloads.sourceforge.net/project/blissos-x86/Official/BlissOS14/FOSS/Generic/Bliss-v14.10.3-x86_64-OFFICIAL-foss-20241012.iso?use_mirror=phoenixnap",
+        "https://downloads.sourceforge.net/project/blissos-x86/Official/BlissOS14/FOSS/Generic/Bliss-v14.10.3-x86_64-OFFICIAL-foss-20241012.iso?use_mirror=cfhcable",
+        "https://downloads.sourceforge.net/project/blissos-x86/Official/BlissOS14/FOSS/Generic/Bliss-v14.10.3-x86_64-OFFICIAL-foss-20241012.iso?use_mirror=deac-fra",
+        "https://downloads.sourceforge.net/project/blissos-x86/Official/BlissOS14/FOSS/Generic/Bliss-v14.10.3-x86_64-OFFICIAL-foss-20241012.iso?use_mirror=kumisystems"
+      ],
+      "segments": 24,
+      "legacy": true
+    },
+    {
+      "id": "android-emulator",
+      "use": "ship",
+      "what": "Google Android Emulator 37.2.13 stable (engine B), prebuilt",
+      "license": "Android SDK License: NOT redistributable. Shipping engine B means building it from AOSP source (Apache-2.0/GPL-2.0)",
+      "url": "https://dl.google.com/android/repository/emulator-windows_x64-16740729.zip",
+      "file": "emulator-windows_x64-16740729.zip",
+      "size": 455344678,
+      "sha1": "4d7268aa7787c640ad892844e6c9a5f159e91ad3"
+    },
+    {
+      "id": "sysimg-api30-x86_64",
+      "use": "ship",
+      "what": "Android 11 AOSP system image, x86_64, for engine B",
+      "license": "Android SDK License: NOT redistributable. Shipped images come from our own AOSP build",
+      "url": "https://dl.google.com/android/repository/sys-img/android/x86_64-30_r11.zip",
+      "file": "x86_64-30_r11.zip",
+      "size": 676379777,
+      "sha1": "5e4de3946d46f88856c35efcc4d797b381456347"
+    },
+    {
+      "id": "platform-tools",
+      "use": "dev",
+      "what": "adb 37.0.3 for development and tests",
+      "license": "Android SDK License: NOT redistributable. The product talks ADB protocol itself or ships adb built from AOSP source",
+      "url": "https://dl.google.com/android/repository/platform-tools_r37.0.3-win.zip",
+      "file": "platform-tools_r37.0.3-win.zip",
+      "size": 8188601,
+      "sha1": "7fea85bc18d0480bc81d3603952d666f49496e5a"
+    },
+    {
+      "id": "nsis",
+      "use": "dev",
+      "what": "NSIS 3.13 portable zip: builds SlightDroid-Setup.exe without installing anything here",
+      "license": "zlib/libpng (installers it produces may be distributed freely)",
+      "url": "https://sourceforge.net/projects/nsis/files/NSIS%203/3.13/nsis-3.13.zip/download",
+      "file": "nsis-3.13.zip",
+      "size": 2363925,
+      "sha1": "db14f8af2ea346b786c6ae19343f61aaf5e09b8e",
+      "mirrors": [
+        "https://downloads.sourceforge.net/project/nsis/NSIS%203/3.13/nsis-3.13.zip?use_mirror=freefr",
+        "https://downloads.sourceforge.net/project/nsis/NSIS%203/3.13/nsis-3.13.zip?use_mirror=netix",
+        "https://downloads.sourceforge.net/project/nsis/NSIS%203/3.13/nsis-3.13.zip?use_mirror=phoenixnap",
+        "https://downloads.sourceforge.net/project/nsis/NSIS%203/3.13/nsis-3.13.zip?use_mirror=cfhcable",
+        "https://downloads.sourceforge.net/project/nsis/NSIS%203/3.13/nsis-3.13.zip?use_mirror=deac-fra",
+        "https://downloads.sourceforge.net/project/nsis/NSIS%203/3.13/nsis-3.13.zip?use_mirror=kumisystems"
+      ],
+      "segments": 24
+    },
+    {
+      "id": "7zip",
+      "use": "dev",
+      "what": "7-Zip 26.06 msi, unpacked with msiexec /a (no install) to extract ISOs and the QEMU installer",
+      "license": "LGPL-2.1 + unRAR restriction",
+      "url": "https://github.com/ip7z/7zip/releases/download/26.06/7z2606-x64.msi",
+      "file": "7z2606-x64.msi",
+      "size": 2003456,
+      "sha256": "6dc822569e777d9a3ecd5ffcbc22b55600af87e6c5d9810a64e8566cf5a4af9f"
+    },
+    {
+      "id": "vlc-x86",
+      "use": "test",
+      "what": "VLC for Android 3.7.1 (x86): APK install test and the 1080p/4K video target [legacy: earlier QEMU engine / tests; skipped unless -All or -Only]",
+      "license": "GPL-2.0+ (test input only, not shipped)",
+      "url": "https://get.videolan.org/vlc-android/3.7.1/VLC-Android-3.7.1-x86.apk",
+      "file": "VLC-Android-3.7.1-x86.apk",
+      "sha256": "5cf145afecd72782771d5dc5e3c98c1f76e5967d8cba20d289340e6638bc47c0",
+      "legacy": true
+    },
+    {
+      "id": "bromite-webview",
+      "use": "ship",
+      "what": "Bromite SystemWebView 108.0.5359.156 x86_64 (renamed to com.android.webview at build time)",
+      "license": "GPL-3.0 (Bromite) + BSD-3-Clause (Chromium); redistributable with source offer",
+      "url": "https://github.com/bromite/bromite/releases/download/108.0.5359.156/x64_SystemWebView.apk",
+      "file": "x64_SystemWebView.apk",
+      "size": 110332290,
+      "sha256": "990e1c052eeca7380496f1ec81843d002402346dffddf60368fa77c888ac10e5"
+    },
+    {
+      "id": "aosp-testkey",
+      "use": "dev",
+      "what": "AOSP public test key (private part) for signing the WebView update",
+      "license": "Apache-2.0 (AOSP build/target/product/security)",
+      "url": "https://raw.githubusercontent.com/aosp-mirror/platform_build/main/target/product/security/testkey.pk8",
+      "file": "testkey.pk8",
+      "size": 1217,
+      "sha256": "495675d32e89a149d5abe191f4e9c0e218b9068714e9b53a7c91e164a0741a23"
+    },
+    {
+      "id": "aosp-testkey",
+      "use": "dev",
+      "what": "AOSP public test key (certificate)",
+      "license": "Apache-2.0 (AOSP build/target/product/security)",
+      "url": "https://raw.githubusercontent.com/aosp-mirror/platform_build/main/target/product/security/testkey.x509.pem",
+      "file": "testkey.x509.pem",
+      "size": 1675,
+      "sha256": "a4384ba815b9499a5ce349b4e33c1755278873fe2eac150a068823f526e6dbde"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+# SlightDroid: imported from /init.rc by the SlightDroid initrd (SLIGHTDROID=1)
+
+on post-fs-data
+    # first boot of a fresh data disk: pre-save the VirtWifi network so Wi-Fi connects by itself
+    exec -- /system/bin/sh /slightdroid/postfs.sh
+
+on property:sys.boot_completed=1
+    # turns Wi-Fi on once on a fresh disk, then sets slightdroid.ready=1 for the launcher
+    exec_background -- /system/bin/sh /slightdroid/bootcomplete.sh

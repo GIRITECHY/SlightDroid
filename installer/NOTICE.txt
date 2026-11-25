@@ -1,0 +1,42 @@
+SlightDroid 0.1.0 alpha - an Android emulator for low-end Windows PCs
+=================================================================
+
+ALPHA SOFTWARE. Expect rough edges. No ads, no store, no analytics: SlightDroid sends
+nothing anywhere.
+
+What Setup does
+- Installs SlightDroid to the folder you choose (about 3.9 GB installed).
+- Checks this PC. If "Windows Hypervisor Platform" is needed and off, it asks before
+  turning it on (this needs a restart). It never changes BIOS settings.
+- Adds Start menu and desktop shortcuts, and lets you open .apk files with SlightDroid.
+- Your Android data (virtual device, quick-boot snapshot, apps, files) is kept in
+  %LOCALAPPDATA%\SlightDroid.
+
+Included third-party software and licences (full texts in the "licenses" folder)
+- Google Android Emulator 37.2.13 (sdk\emulator): prebuilt under the Android SDK License
+  (not publicly redistributable). Underlying open-source components include QEMU
+  (GNU GPL v2), android-emu and gfxstream (Apache License 2.0), Qt (LGPL v3), ANGLE
+  (BSD-3-Clause), and others; see licenses\android-emulator-LICENSE,
+  licenses\android-emulator-NOTICE.txt, and licenses\android-emulator-NOTICE.csv.
+- Android 11 (API 30) AOSP x86_64 system image (sdk\system-images\android-30\default\x86_64):
+  prebuilt under the Android SDK License (not publicly redistributable); see
+  licenses\android-11-system-image-source.properties.
+- Android SDK Platform-Tools 37.0.3 (sdk\platform-tools\adb.exe): prebuilt under the
+  Android SDK License (not publicly redistributable); see licenses\platform-tools-NOTICE.txt.
+- Bromite SystemWebView 108.0.5359.156 x86_64 (apps\webview.apk): GNU GPL v3 (Bromite
+  patches), BSD-3-Clause (Chromium), and Chromium third-party licences (chrome://credits).
+  SlightDroid changes only the package name (org.bromite.webview -> com.android.webview)
+  via tools/build/rename-webview.py and signs it with the public AOSP test key so Android 11
+  accepts it as a WebView update; see licenses\WebView-Bromite.txt.
+
+Source code and redistribution note
+- Bromite SystemWebView source: https://github.com/bromite/bromite (release 108.0.5359.156).
+- SlightDroid rename tool: tools/build/rename-webview.py in the SlightDroid repository.
+- Redistribution notice: the prebuilt Google Android Emulator, Platform-Tools, and
+  Android 11 system image bundled in this alpha build are under the Android SDK License
+  and are NOT publicly redistributable without replacing them with AOSP source builds.
+
+SlightDroid itself (launcher, tools, installer scripts):
+Copyright (c) 2026 Shalom Arputha Singh, MIT License.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.

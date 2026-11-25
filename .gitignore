@@ -1,0 +1,43 @@
+# Large or generated (top-level folders only: tools/build/ holds the build scripts and is tracked)
+/build/
+/downloads/
+/dist/
+
+# Android packages and disk images: never committed (third-party binaries, licence limits, size)
+*.apk
+*.aab
+*.qcow2
+*.img
+*.iso
+*.zip
+*.7z
+*.exe
+*.msi
+*.dll
+
+# Signing keys, certificates and secrets
+*.pk8
+*.pem
+*.p12
+*.pfx
+*.keystore
+*.jks
+*.key
+.env
+.env.*
+*_token*
+*.auth_token
+
+# SlightDroid runtime files (if a test data folder ever lands in the project)
+settings.ini
+vm.state
+*.tsv
+boot-seconds.txt
+emulator-user.ini
+
+# Logs, caches, local tool folders
+*.log
+__pycache__/
+.claude/
+.vscode/
+.idea/
