@@ -22,7 +22,7 @@ only a proxy; see [docs/PLAN.md](docs/PLAN.md) for the original plan and budgets
 | Start-up | First start ~50 s; after that Android resumes from a quick-boot snapshot in ~2-4 s. Closing saves the snapshot. Loading screen with a real percentage. |
 | Resources | Shares the PC with Windows: Android gets what is free minus a reserve for Windows and the engine, at most half the PC's RAM (1-4 GB) and half its CPU threads (2-8). Overridable in Settings. |
 | Display | Resolution follows the monitor's shape, at most 800 lines with a GPU (720 without). Window fitted to the screen, pixel-exact at any Windows scaling. **F11** or Ctrl+Alt+F: full screen. |
-| Video | In-app web video: the engine's per-command graphics checksum is off (NetMirror hitches 8.2 % -> 0.4 %), and a current WebView (108) replaces Android 11's WebView 83 at first start. Native players (VLC) play 1080p30/60 H.264 and HEVC smoothly. |
+| Video | In-app web video: `-Vulkan,-GLPipeChecksum,-HardwareDecoder` disables the graphics-pipe checksum (`NetMirror` hitches `8.2%` -> `0.4%`) and host `HardwareDecoder` (avoids broken `GoldfishAVCDec` host `ffmpeg` fallback on non-NVIDIA GPUs so WebView decodes smoothly via `OMX.google`), and WebView `108` replaces Android 11's WebView `83` at first start. Native players (VLC) play 1080p30/60 H.264 and HEVC smoothly. |
 | Apps and files | Drag an APK onto the Android window to install it; other files land in Download. Double-click `.apk` files in Windows. **SlightDroid Files**: browse Android storage, drag files in and out, Ctrl+C / Ctrl+V with Explorer, rename, delete. |
 | Controls | The engine's side toolbar (power, volume, rotate, back/home/recents, screenshot, more) and keys: Ctrl+H home, Ctrl+Backspace or Esc back, Ctrl+O recents, Ctrl+P power, Ctrl+= / Ctrl+- volume, Ctrl+S screenshot. |
 | Privacy | `-no-metrics` (no usage statistics to Google); crash uploaders removed from the engine. |
@@ -137,7 +137,22 @@ and `balloon-test.ps1` are from the earlier QEMU engine.
 | NetMirror (WebView video), frames held >= 58 ms | 8.2 % before, **0.4 %** with checksum off and WebView 108 |
 | Engine memory | about 0.7-0.9 GB on top of Android's RAM |
 
-Nothing has been measured on target hardware yet.
+### WebView / OTT Video Playback Fix (Intel UHD / non-NVIDIA PCs)
+
+On the original RTX 4050 dev PC, `HardwareDecoder = on` could use `nvcuda.dll` (NVIDIA CUVID). On integrated/non-NVIDIA GPUs (measured on **Intel UHD Graphics `8086:46d0`, 8 threads / 8 GB RAM, Windows 11**), WebView OTT streams (e.g., NetMirror) stalled every **5–30 s**.
+
+- **Root cause:** With `HardwareDecoder` enabled in the engine defaults, Android 11 selects `OMX.android.goldfish.h264.decoder` (`GoldfishAVCDec`). Without NVIDIA CUDA (`LoadLibrary "nvcuda.dll" failed!` / `Failed to call cuInit`), it falls back to host `ffmpeg` over the QEMU pipe plus an experimental `OMX_COLOR_FormatYUV420Planar` -> `YCbCr_420_888` gralloc path, producing `[h264] illegal short term buffer state detected` / `no frame!`, periodic `goldfish_avcdec: received EOS, re-create host context` decoder resets, `NdkImageReader` buffer overrides (`0x13`), and CPU spikes up to `150%`.
+- **Fix ([`launcher/Vm.cs`](launcher/Vm.cs#L170-L174)):** Added `-HardwareDecoder` to the emulator launch flags (`-feature -Vulkan,-GLPipeChecksum,-HardwareDecoder`). This routes H.264 WebView playback through guest `OMX.google.h264.decoder` instead of `OMX.android.goldfish.h264.decoder`, keeping full compatibility and low memory use on Android 11.
+- **Why Android 11 (`android-30`) was kept over Android 14 (`android-34`):** Side-by-side tests against `system-images;android-34;default;x86_64` (WebView `113.0.5672.136`, Codec2) showed Android 14 still stalled on `1080p60` HLS ABR (`2` stalls / `284` dropped frames + `NdkImageReader: Unable to acquire a lockedBuffer` warnings with `c2.goldfish.h264.decoder`; `4` stalls / `103%` `media.swcodec` CPU with `-HardwareDecoder` / `c2.android.avc.decoder`), used more RAM (`~2.13–2.16 GB` + `45–63 MB` swap idle with NetMirror), and dropped 32-bit ABI support (`abilist32=`).
+
+| Benchmark (`Intel UHD 46d0`, `4` guest vCPUs, `-no-audio`) | Local 720p MP4 (15 s) | Local HLS ABR (`720p60 -> 1080p60 -> 240p30`, 26 s) | Memory / CPU |
+|---|---|---|---|
+| **Android 11 baseline** (`HardwareDecoder = on`, `OMX.android.goldfish.h264.decoder`) | `ct=15.06 s`, `df=6/450` (previously `4` stalls / `df=106` in `20 s` with default audio) | `ct=16.16 s`, **`5` stalls**, `received EOS, re-create host context` | `93.3%` WebView + `40%` `media.codec` |
+| **Android 11 fixed** (`-HardwareDecoder`, `OMX.google.h264.decoder`) | **`ct=15.03 s`, `df=0/451`, `0` stalls** | **`ct=25.86 s`, `df=264/1371`, `0` stalls after start** | **`1,742 MB` used / `0` swap**, `67.8%` WebView + `7.1%` `media.codec` (`296%` of `400%` idle) |
+| **Android 14** (`HardwareDecoder = on`, `c2.goldfish.h264.decoder`) | `ct=14.91 s`, `df=0/448`, `0` stalls | `ct=24.82 s`, `2` stalls, `df=284/1342` | `~2.13–2.16 GB` + `45–63 MB` swap |
+| **Android 14** (`-HardwareDecoder`, `c2.android.avc.decoder`) | `ct=15.04 s`, `df=2/451`, `0` stalls | `ct=16.07 s`, `4` stalls, `df=403/939` | `103%` `media.swcodec` (`139%` idle) |
+
+Nothing has been measured on a 4 GB / Pentium target PC yet.
 
 ## Known issues
 

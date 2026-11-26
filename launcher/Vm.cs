@@ -167,9 +167,11 @@ namespace SlightDroid {
                 "-avd", AvdName, "-port", port.ToString(),
                 "-no-metrics",                 // no usage statistics to Google
                 "-no-boot-anim", "-gpu", EngineGpuMode(),
-                // GLES only (lighter; Vulkan drivers are the less tested path on old PCs), and no per-command checksum on the
-                // graphics pipe: with it, WebView video (e.g. NetMirror) held ~8 % of frames 58+ ms; without, 0.4 % (2026-11-19)
-                "-feature", "-Vulkan,-GLPipeChecksum",
+                // GLES only (lighter; Vulkan drivers are the less tested path on old PCs), no per-command checksum on the graphics
+                // pipe (with it, WebView video like NetMirror held ~8 % of frames 58+ ms; without, 0.4 %, 2026-11-19), and disable host
+                // HardwareDecoder: without NVIDIA CUDA (nvcuda.dll), GoldfishAVCDec falls back to broken host ffmpeg + experimental
+                // YUV420Planar conversion with periodic EOS resets and 3-5 s stalls, whereas guest OMX.google plays smoothly.
+                "-feature", "-Vulkan,-GLPipeChecksum,-HardwareDecoder",
             };
             string extra = Environment.GetEnvironmentVariable("SLIGHTDROID_ENGINE_ARGS");   // dev experiments
             if (!string.IsNullOrEmpty(extra)) a.AddRange(extra.Split(' '));
