@@ -10,7 +10,7 @@ No ads, no store, no analytics.
 **Target hardware:** low-end PCs (4 GB RAM, Intel Pentium, integrated graphics). The dev PC is
 only a proxy; see [docs/PLAN.md](docs/PLAN.md) for the original plan and budgets.
 
-> **Status: v0.1.0 alpha, tested only on the dev PC.** Not yet run on a real 4 GB / Pentium PC.
+> **Latest release: `2.0-alpha` (`SlightDroid-Setup-2.0-alpha.exe`).** Tested on dev PCs (`RTX 4050` 16 GB and `Intel UHD 46d0` 8 GB); not yet run on a real 4 GB / Pentium PC.
 > Read [Licensing](#licensing) before sharing an installer: the current build bundles
 > Google binaries that are not redistributable.
 
@@ -26,6 +26,17 @@ only a proxy; see [docs/PLAN.md](docs/PLAN.md) for the original plan and budgets
 | Apps and files | Drag an APK onto the Android window to install it; other files land in Download. Double-click `.apk` files in Windows. **SlightDroid Files**: browse Android storage, drag files in and out, Ctrl+C / Ctrl+V with Explorer, rename, delete. |
 | Controls | The engine's side toolbar (power, volume, rotate, back/home/recents, screenshot, more) and keys: Ctrl+H home, Ctrl+Backspace or Esc back, Ctrl+O recents, Ctrl+P power, Ctrl+= / Ctrl+- volume, Ctrl+S screenshot. |
 | Privacy | `-no-metrics` (no usage statistics to Google); crash uploaders removed from the engine. |
+
+## Latest Release (`2.0-alpha`)
+
+- **Tag / Version:** `v2.0-alpha` (`2.0-alpha`)
+- **Installer (`dist/`):** `SlightDroid-Setup-2.0-alpha.exe` (`757,601,478` bytes / `723 MB`, NSIS 3 LZMA offline installer)
+- **SHA-256 (`dist/SlightDroid-Setup-2.0-alpha.exe.sha256`):** `8311eca41285dfed987a3dac6502a68000c3fe2342917840f2eb2657f884954d`
+- **Changes since `0.1.0-alpha`:**
+  - Disabled broken host `HardwareDecoder` (`-feature -Vulkan,-GLPipeChecksum,-HardwareDecoder` in [`launcher/Vm.cs`](launcher/Vm.cs#L170-L174)) to fix 5–30 s WebView/OTT playback stalls on non-NVIDIA GPUs (`Intel UHD Graphics`, etc.).
+  - Verified smooth NetMirror OTT playback and zero playback stalls across local 720p MP4 and local ABR HLS (`720p60 -> 1080p60 -> 240p30`).
+  - Documented Android 11 vs. Android 14 benchmark rationale in [Measurements](#webview--ott-video-playback-fix-intel-uhd--non-nvidia-pcs).
+- **Distribution note:** The compiled `.exe` stays in local `dist/` (not tracked in Git due to GitHub's 100 MB file limit and non-redistributable Google SDK binaries; see [Licensing](#licensing)). Build it locally with `tools/build/build-installer.ps1 -Version 2.0-alpha`.
 
 ## Using it
 
@@ -88,7 +99,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File tools/build/stage-engine.ps1
 ```
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File tools/build/build-installer.ps1
+powershell -NoProfile -ExecutionPolicy Bypass -File tools/build/build-installer.ps1 -Version 2.0-alpha
 ```
 
 1. `setup-build.ps1` (once): downloads the pinned inputs from `tools/fetch/deps.json` (segmented,
